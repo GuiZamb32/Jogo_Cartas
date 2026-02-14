@@ -80,25 +80,25 @@ src/assets/cartas/Parte-Traz.png
 
 ## 🚀 Como Rodar o Projeto
 
-### 1️⃣ Clonar o repositório
+### 1️ Clonar o repositório
 
 ```bash
 git clone https://github.com/seu-usuario/seu-repositorio.git
 ```
 
-### 2️⃣ Entrar na pasta do projeto
+### 2️ Entrar na pasta do projeto
 
 ```bash
 cd Jogo-Cartas/frontend
 ```
 
-### 3️⃣ Instalar as dependências
+### 3️ Instalar as dependências
 
 ```bash
 npm install
 ```
 
-### 4️⃣ Iniciar o projeto
+### 4️ Iniciar o projeto
 
 ```bash
 npm run dev
