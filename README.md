@@ -159,12 +159,12 @@ Atualmente:
 
 ## 🕹️ Funcionalidades Implementadas
 
-✔️ Exibição das cartas na tela
-✔️ Distribuição automática de 3 cartas
-✔️ Embaralhamento aleatório
-✔️ Sem repetição de cartas
-✔️ Botão de embaralhar cartas
-✔️ Estrutura preparada para expansão
+✔️ Exibição das cartas na tela  <br>
+✔️ Distribuição automática de 3 cartas  <br>
+✔️ Embaralhamento aleatório  <br>
+✔️ Sem repetição de cartas  <br>
+✔️ Botão de embaralhar cartas  <br>
+✔️ Estrutura preparada para expansão  <br>
 
 ---
 
