@@ -1,0 +1,149 @@
+.mesa-container {
+  width: 100vw;
+  height: 100vh;
+  background: #063119; /* Verde escuro das fotos */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header */
+.mesa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 15px;
+}
+
+.btn-voltar-red { background: #d00; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btn-embaralhar-blue { background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+.info-modo { color: white; font-weight: bold; }
+
+/* Molduras das Mãos */
+.moldura-mao {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #111;
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 300px;
+  min-height: 150px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.moldura-mao.ativo {
+  border: 2px solid #ffcc00;
+  box-shadow: 0 0 15px #ffcc00;
+}
+
+.label-identificador {
+  position: absolute;
+  top: 5px;
+  color: white;
+  font-weight: bold;
+}
+
+.cartas-fileira {
+  display: flex;
+  gap: 10px;
+}
+
+/* Mesa Central Estilo Trapézio */
+.secao-central {
+  display: flex;
+  justify-content: center;
+}
+
+.tapete-mesa {
+  background: rgba(0, 0, 0, 0.3);
+  width: 60%;
+  height: 160px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  gap: 20px;
+}
+
+.slot-mesa {
+ display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  min-width: 120px; /* Largura da carta */
+  min-height: 170px; /* Altura da carta */
+  justify-content: center;
+}
+
+.slot-resultado {
+  border-left: 1px solid #222;
+  border-right: 1px solid #222;
+  padding: 0 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+/* Placar Mini */
+.mini-placar {
+  position: absolute;
+  bottom: 20px;
+  right: 50px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 180px;
+}
+
+.placar-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  color: #aaa;
+  font-size: 12px;
+  padding: 5px;
+}
+
+.placar-corpo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 40px;
+  border-top: 1px solid #333;
+}
+
+.celula { display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; }
+.celula.voce { background: #050; }
+.celula.bot { background: #522; }
+
+/* Modal Vitoria/Derrota */
+.modal-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(5px);
+}
+
+.modal-overlay.vitoria { background: rgba(0, 50, 0, 0.7); }
+.modal-overlay.derrota { background: rgba(50, 0, 0, 0.7); }
+
+.modal-content {
+  background: linear-gradient(to bottom, #111, #000);
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
+  border: 2px solid #333;
+}
+
+.modal-content h1 { font-size: 60px; color: white; margin-bottom: 30px; }
+.btn-jogar { background: #080; color: white; padding: 15px 30px; border-radius: 10px; margin-right: 10px; cursor: pointer; }
+.btn-sair { background: #800; color: white; padding: 15px 30px; border-radius: 10px; cursor: pointer; }

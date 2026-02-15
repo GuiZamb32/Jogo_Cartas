@@ -154,4 +154,6 @@ export const BARALHO_BASE = [
 ];
 
 
+
+
 export const VERSO_CARTA = verso;

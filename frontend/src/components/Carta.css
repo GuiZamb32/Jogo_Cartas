@@ -1,61 +1,62 @@
 /* Container principal da carta */
+
 .carta-container {
   width: 120px;
   height: 172px;
-  perspective: 1400px;
-  position: relative;
-  transition: transform 0.25s ease, filter 0.25s ease;
+  perspective: 1200px;
+  opacity: 0;
+  transform: translateY(40px) scale(0.8);
 }
 
-/* Levantar carta com profundidade real */
+/* Quando a carta entra na mesa */
+.carta-container.entrando {
+  animation: distribuirCarta 0.5s ease forwards;
+}
+
+/* Hover mais suave e profissional */
 .carta-container:hover {
   transform: translateY(-12px) scale(1.05);
-  
+  transition: transform 0.2s ease;
 }
+
 
 /* Estrutura 3D */
 .carta {
-  width: 100%;
-  height: 100%;
+  width: 120px;
+  height: 170px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-  cursor: pointer;
+  transition: transform 0.6s;
 }
 
-/* Quando está virada (mostra a frente) */
 .carta.virada {
   transform: rotateY(180deg);
 }
 
-/* Faces da carta */
 .face {
   position: absolute;
   width: 100%;
   height: 100%;
-  border-radius: 16px;
-  backface-visibility: hidden;
-  overflow: hidden;
-  background: #000;
-  box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.5),
-    0 2px 6px rgba(0, 0, 0, 0.3);
+  backface-visibility: hidden; /* Isso impede que uma face apareça atrás da outra */
+  border-radius: 12px;
+  background-color: #00000000; /* Adicione um fundo branco caso a imagem falhe */
 }
 
-/* Imagem da carta (SEM corte) */
+.frente {
+  transform: rotateY(180deg);
+}
+
+.verso {
+  transform: rotateY(0deg);
+  z-index: 2; /* Garante que o verso fique no topo inicialmente */
+}
+
 .face img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* mantém sua arte do Figma perfeita */
-  user-select: none;
-  pointer-events: none;
-  display: block;
+  object-fit: cover;
 }
 
-/* Verso da carta */
-.verso {
-  transform: rotateY(180deg);
-}
 
 /* ========================= */
 /* HOVER INFO PROFISSIONAL   */
@@ -152,18 +153,7 @@
 /* ANIMAÇÃO DE DISTRIBUIÇÃO  */
 /* ========================= */
 
-.carta-container {
-  width: 120px;
-  height: 172px;
-  perspective: 1200px;
-  opacity: 0;
-  transform: translateY(40px) scale(0.8);
-}
 
-/* Quando a carta entra na mesa */
-.carta-container.entrando {
-  animation: distribuirCarta 0.5s ease forwards;
-}
 
 @keyframes distribuirCarta {
   0% {
@@ -178,10 +168,4 @@
     opacity: 1;
     transform: translateY(0px) scale(1);
   }
-}
-
-/* Hover mais suave e profissional */
-.carta-container:hover {
-  transform: translateY(-12px) scale(1.05);
-  transition: transform 0.2s ease;
 }

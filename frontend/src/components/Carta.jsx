@@ -24,17 +24,35 @@ const getCor = (nome) => {
   return "naipe-preto";
 };
 
-function Carta({ carta, verso, delay = 0 }) {
-  const [virada, setVirada] = useState(true); // começa com verso
-  const [visivel, setVisivel] = useState(false); // animação de entrada
+function Carta({ carta, verso, delay = 0, onClick, forcedOpen = false }) {
+  // Se forcedOpen for true, ela já começa revelada
+  const [isRevelada, setIsRevelada] = useState(forcedOpen); 
+  const [visivel, setVisivel] = useState(false);
 
+  // Sincroniza o estado caso a prop forcedOpen mude ou a carta mude
+  useEffect(() => {
+    setIsRevelada(forcedOpen);
+  }, [carta.uid, forcedOpen]);
+
+  // ... resto do seu código (useEffect de visivel, handlers, etc)
+
+  // Animação de entrada (distribuição na mesa)
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisivel(true);
     }, delay);
-
     return () => clearTimeout(timer);
   }, [delay]);
+
+  const handleClique = (e) => {
+    // Se a carta estiver de verso, apenas vira ela
+    if (!isRevelada) {
+      setIsRevelada(true);
+    } else {
+      // Se já estiver aberta, executa a ação de jogar a carta (passada pelo App.js)
+      if (onClick) onClick(carta);
+    }
+  };
 
   const simbolo = getSimboloNaipe(carta.nome);
   const valor = getValor(carta.nome);
@@ -43,24 +61,27 @@ function Carta({ carta, verso, delay = 0 }) {
   return (
     <div
       className={`carta-container ${visivel ? "entrando" : ""}`}
-      onClick={() => setVirada(!virada)}
+      onClick={handleClique}
       style={{ animationDelay: `${delay}ms` }}
     >
-      <div className={`carta ${!virada ? "virada" : ""}`}>
+      {/* A classe CSS "virada" aplica o rotateY(180deg).
+          Se isRevelada for true, aplicamos a classe para mostrar a FRENTE.
+      */}
+      <div className={`carta ${isRevelada ? "virada" : ""}`}>
         
-        {/* FRENTE */}
+        {/* FRENTE: Fica escondida atrás (180deg) por padrão no CSS */}
         <div className="face frente">
           <img src={carta.img} alt={carta.nome} />
         </div>
 
-        {/* VERSO */}
+        {/* VERSO: Fica visível (0deg) por padrão */}
         <div className="face verso">
           <img src={verso} alt="Verso da carta" />
         </div>
       </div>
 
-      {/* Tooltip profissional */}
-      {!virada && (
+      {/* Hover info: Só aparece quando a carta está revelada */}
+      {isRevelada && (
         <div className={`hover-info ${corClasse}`}>
           <div className="hover-simbolo">
             {valor} {simbolo}
