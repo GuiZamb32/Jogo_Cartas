@@ -1,21 +1,187 @@
-.carta {
+/* Container principal da carta */
+.carta-container {
   width: 120px;
-  height: 170px;
-  cursor: pointer;
+  height: 172px;
+  perspective: 1400px;
+  position: relative;
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.carta-img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  border-radius: 10px;
-  user-select: none;
-  pointer-events: none;
+/* Levantar carta com profundidade real */
+.carta-container:hover {
+  transform: translateY(-12px) scale(1.05);
+  
 }
 
-/* Efeito profissional estilo jogo */
-.carta:hover {
-  transform: translateY(-18px) scale(1.08);
-  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6));
+/* Estrutura 3D */
+.carta {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  cursor: pointer;
+}
+
+/* Quando está virada (mostra a frente) */
+.carta.virada {
+  transform: rotateY(180deg);
+}
+
+/* Faces da carta */
+.face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagem da carta (SEM corte) */
+.face img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* mantém sua arte do Figma perfeita */
+  user-select: none;
+  pointer-events: none;
+  display: block;
+}
+
+/* Verso da carta */
+.verso {
+  transform: rotateY(180deg);
+}
+
+/* ========================= */
+/* HOVER INFO PROFISSIONAL   */
+/* ========================= */
+
+/* Tooltip flutuante (estilo jogo) */
+.hover-info {
+  position: absolute;
+  bottom: -70px; /* fica abaixo da carta */
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  min-width: 110px;
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  /* Glass effect */
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(0, 0, 0, 0.3);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  text-align: center;
+  z-index: 20;
+}
+
+/* Seta do tooltip */
+.hover-info::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent rgba(15, 23, 42, 0.9) transparent;
+}
+
+/* Mostrar tooltip apenas quando a carta está revelada */
+.carta-container:hover .hover-info {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0px);
+}
+
+/* Valor + Naipe (grande e elegante) */
+.hover-simbolo {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+/* Nome da carta */
+.hover-nome {
+  font-size: 12px;
+  font-weight: 500;
+  color: #e5e7eb;
+  opacity: 0.9;
+}
+
+/* Cores automáticas dos naipes */
+.naipe-vermelho .hover-simbolo {
+  color: #ef4444; /* vermelho elegante */
+}
+
+.naipe-preto .hover-simbolo {
+  color: #e5e7eb; /* branco suave ao invés de preto puro */
+}
+
+/* Glow especial por naipe (efeito premium) */
+.naipe-vermelho {
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(239, 68, 68, 0.25);
+}
+
+.naipe-preto {
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(148, 163, 184, 0.15);
+}
+
+
+/*//////////////////////////////////////////////*/
+
+/* ========================= */
+/* ANIMAÇÃO DE DISTRIBUIÇÃO  */
+/* ========================= */
+
+.carta-container {
+  width: 120px;
+  height: 172px;
+  perspective: 1200px;
+  opacity: 0;
+  transform: translateY(40px) scale(0.8);
+}
+
+/* Quando a carta entra na mesa */
+.carta-container.entrando {
+  animation: distribuirCarta 0.5s ease forwards;
+}
+
+@keyframes distribuirCarta {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-10px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+
+/* Hover mais suave e profissional */
+.carta-container:hover {
+  transform: translateY(-12px) scale(1.05);
+  transition: transform 0.2s ease;
 }

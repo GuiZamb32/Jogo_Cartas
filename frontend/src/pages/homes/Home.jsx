@@ -1,31 +1,26 @@
-import React from "react";
 import "./Home.css";
 
-function Home({ onPlay, onRules, onSettings }) {
+function Home({ onPlayTruco, onPlayPoker }) {
   return (
     <div className="home-container">
       <div className="home-card">
         <h1 className="home-title">Jogo de Cartas</h1>
         <p className="home-subtitle">
-          Bem-vindo! Escolha uma opção para começar.
+          Escolha o modo de jogo
         </p>
 
         <div className="home-buttons">
-          <button className="btn-primary" onClick={onPlay}>
-            Jogar
+          <button className="btn-jogar-truco" onClick={onPlayTruco}>
+            🃏 Jogar Truco
           </button>
 
-          <button className="btn-secondary" onClick={onRules}>
-            Regras
-          </button>
-
-          <button className="btn-secondary" onClick={onSettings}>
-            Configurações
+          <button className="btn-jogar-poker" onClick={onPlayPoker}>
+            ♠️ Jogar Poker
           </button>
         </div>
 
         <div className="home-footer">
-          <span>Versão 1.0</span>
+          Desenvolvido em React • Cartas feitas no Figma
         </div>
       </div>
     </div>
