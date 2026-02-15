@@ -36,9 +36,31 @@
   align-items: center;
 }
 
+.vira-container {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(0,0,0,0.4);
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid #222;
+  color: white;
+  font-weight: bold;
+}
+
+.manilha-text {
+  color: #ffcc00;
+  font-size: 14px;
+}
+
+
 .moldura-mao.ativo {
-  border: 2px solid #ffcc00;
-  box-shadow: 0 0 15px #ffcc00;
+  border: 2px solid #ffcc0073;
+  box-shadow: 0 0 15px #ffcc0058;
 }
 
 .label-identificador {
