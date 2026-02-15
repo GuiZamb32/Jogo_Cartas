@@ -17,12 +17,12 @@ const FORCA_TRUCO = {
 
 const ORDEM_TRUCO = ["4", "5", "6", "7", "Q", "J", "K", "A", "2", "3"];
 
-// Hierarquia REAL do Truco Paulista (manilhas)
+// Hierarquia do Truco Paulista (manilhas)
 const FORCA_NAIPE = {
-  Paus: 4,     // ♣ (mais forte)
-  Copas: 3,    // ♥
-  Espadas: 2,  // ♠
-  Ouros: 1,    // ♦ (mais fraco)
+  Paus: 4,
+  Copas: 3,
+  Espadas: 2,
+  Ouros: 1,
 };
 
 const obterValorCarta = (nome) => {
@@ -58,6 +58,8 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
   // Sistema de manilha
   const [vira, setVira] = useState(null);
   const [manilha, setManilha] = useState(null);
+  const [cartaManilhaVisual, setCartaManilhaVisual] = useState(null);
+
 
   const processandoRodada = useRef(false);
 
@@ -68,25 +70,39 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
 
     const embaralhado = [...baseFiltrada].sort(() => Math.random() - 0.5);
 
-    // Define Vira e Manilha
+    // Define vira e manilha
     const cartaVira = embaralhado[6];
     const valorVira = obterValorCarta(cartaVira.nome);
     const valorManilha = obterProximaCarta(valorVira);
 
-    setVira(cartaVira);
-    setManilha(valorManilha);
+   setVira(cartaVira);
+setManilha(valorManilha);
+
+// Encontrar uma carta do baralho que represente a manilha
+const cartaVisual = baseFiltrada.find(
+  (c) => obterValorCarta(c.nome) === valorManilha
+);
+
+if (cartaVisual) {
+  setCartaManilhaVisual({
+    ...cartaVisual,
+    uid: "manilha-visual",
+  });
+}
 
     // Distribui cartas
     setMaoJogador(
-      embaralhado
-        .slice(0, 3)
-        .map((c) => ({ ...c, uid: crypto.randomUUID() }))
+      embaralhado.slice(0, 3).map((c) => ({
+        ...c,
+        uid: crypto.randomUUID(),
+      }))
     );
 
     setMaoBot(
-      embaralhado
-        .slice(3, 6)
-        .map((c) => ({ ...c, uid: crypto.randomUUID() }))
+      embaralhado.slice(3, 6).map((c) => ({
+        ...c,
+        uid: crypto.randomUUID(),
+      }))
     );
 
     setMesaCartas({ voce: null, bot: null });
@@ -143,7 +159,7 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
     }
   }, [turno, maoBot, mesaCartas, resultadoFinal]);
 
-  // Lógica da rodada (COM MANILHA REAL)
+  // Lógica da rodada com MANILHA REAL
   useEffect(() => {
     if (mesaCartas.voce && mesaCartas.bot) {
       processandoRodada.current = true;
@@ -160,25 +176,18 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
 
         let vencedorRodada;
 
-        // Ambos são manilha → desempate por naipe (Truco Paulista)
         if (jogadorEhManilha && botEhManilha) {
-          const forcaNaipeJ = FORCA_NAIPE[naipeJogador];
-          const forcaNaipeB = FORCA_NAIPE[naipeBot];
+          const fJ = FORCA_NAIPE[naipeJogador];
+          const fB = FORCA_NAIPE[naipeBot];
 
-          if (forcaNaipeJ > forcaNaipeB) vencedorRodada = "voce";
-          else if (forcaNaipeB > forcaNaipeJ) vencedorRodada = "bot";
+          if (fJ > fB) vencedorRodada = "voce";
+          else if (fB > fJ) vencedorRodada = "bot";
           else vencedorRodada = "empate";
-        }
-        // Só jogador tem manilha
-        else if (jogadorEhManilha) {
+        } else if (jogadorEhManilha) {
           vencedorRodada = "voce";
-        }
-        // Só bot tem manilha
-        else if (botEhManilha) {
+        } else if (botEhManilha) {
           vencedorRodada = "bot";
-        }
-        // Nenhuma manilha → força normal
-        else {
+        } else {
           const vJ = FORCA_TRUCO[valorJogador];
           const vB = FORCA_TRUCO[valorBot];
 
@@ -191,48 +200,32 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
         novoHistorico[rodadaAtual] = vencedorRodada;
         setHistorico(novoHistorico);
 
-        const r1 = novoHistorico[0];
-        const r2 = novoHistorico[1];
-        const r3 = novoHistorico[2];
+        const vitoriasJogador = novoHistorico.filter((r) => r === "voce").length;
+        const vitoriasBot = novoHistorico.filter((r) => r === "bot").length;
 
         let fimDeJogo = false;
         let vencedorFinal = null;
         let proximoTurno = turno;
 
-        const vitoriasJogador = novoHistorico.filter((r) => r === "voce").length;
-        const vitoriasBot = novoHistorico.filter((r) => r === "bot").length;
-
-        // 2 vitórias ganha o jogo
         if (vitoriasJogador >= 2) {
           vencedorFinal = "vitoria";
           fimDeJogo = true;
         } else if (vitoriasBot >= 2) {
           vencedorFinal = "derrota";
           fimDeJogo = true;
-        }
-        // Empate na 1ª, quem ganhar a 2ª vence
-        else if (rodadaAtual === 1 && r1 === "empate" && r2 !== "empate") {
-          vencedorFinal = r2 === "voce" ? "vitoria" : "derrota";
-          fimDeJogo = true;
-        }
-        // Ganhou a 1ª e empatou a 2ª
-        else if (rodadaAtual === 1 && r2 === "empate" && r1 !== "empate") {
-          vencedorFinal = r1 === "voce" ? "vitoria" : "derrota";
-          fimDeJogo = true;
-        }
-        // Terceira rodada decide
-        else if (rodadaAtual === 2) {
-          if (r3 === "voce") vencedorFinal = "vitoria";
-          else if (r3 === "bot") vencedorFinal = "derrota";
-          else vencedorFinal = "empate";
+        } else if (rodadaAtual === 2) {
+          vencedorFinal =
+            vencedorRodada === "voce"
+              ? "vitoria"
+              : vencedorRodada === "bot"
+              ? "derrota"
+              : "empate";
           fimDeJogo = true;
         }
 
-        // Quem ganha começa a próxima rodada
         if (!fimDeJogo) {
           if (vencedorRodada === "voce") proximoTurno = "jogador";
           else if (vencedorRodada === "bot") proximoTurno = "bot";
-          else proximoTurno = turno;
         }
 
         if (fimDeJogo) {
@@ -253,6 +246,7 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
 
   return (
     <div className="mesa-container">
+      {/* Header */}
       <div className="mesa-header">
         <button className="btn-voltar-red" onClick={onVoltar}>
           ← Voltar
@@ -263,7 +257,24 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
         </button>
       </div>
 
-      <div className="secao-bot">
+      {/* Placar Superior */}
+      <div className="placar-pontos">
+        <div className="placar-col">
+          <span className="placar-label">Você</span>
+          <div className="placar-valor">
+            {historico.filter((h) => h === "voce").length}
+          </div>
+        </div>
+        <div className="placar-col">
+          <span className="placar-label">Bot</span>
+          <div className="placar-valor">
+            {historico.filter((h) => h === "bot").length}
+          </div>
+        </div>
+      </div>
+
+      {/* Mão do Bot */}
+      <div className="area-bot">
         <div className={`moldura-mao ${turno === "bot" ? "ativo" : ""}`}>
           <span className="label-identificador">Bot</span>
           <div className="cartas-fileira">
@@ -274,76 +285,71 @@ function Mesa({ modo, onVoltar, baralhoBase, verso }) {
         </div>
       </div>
 
-      {vira && (
-        <div className="vira-area">
-          <div className="vira-box">
-            <span className="label-vira">Vira</span>
-            <Carta carta={vira} forcedOpen={true} />
-          </div>
-
-          <div className="manilha-info">
-            <span>Manilha:</span>
-            <strong>{manilha}</strong>
-          </div>
-        </div>
-      )}
-
-      <div className="secao-central">
+      {/* Centro da Mesa */}
+      <div className="area-central">
         <div className="tapete-mesa">
-          <div className="slot-mesa">
-            <span className="label-slot">Você</span>
+          <div className="cartas-jogadas">
             {mesaCartas.voce && (
               <Carta carta={mesaCartas.voce} forcedOpen={true} />
             )}
-          </div>
-
-          <div className="slot-resultado">
-            <span className="vitoria-texto">
-              Rodada {rodadaAtual + 1}
-            </span>
-          </div>
-
-          <div className="slot-mesa">
-            <span className="label-slot">Bot</span>
             {mesaCartas.bot && (
               <Carta carta={mesaCartas.bot} forcedOpen={true} />
             )}
           </div>
+          <span className="label-mesa">Rodada {rodadaAtual + 1}</span>
         </div>
       </div>
 
-      <div className="secao-jogador">
-        <div className={`moldura-mao ${turno === "jogador" ? "ativo" : ""}`}>
-          <span className="label-identificador">Sua Mão</span>
-          <div className="cartas-fileira">
-            {maoJogador.map((c, i) => (
-              <Carta
-                key={c.uid}
-                carta={c}
-                verso={verso}
-                delay={i * 100}
-                onClick={() => jogarCartaJogador(c)}
-              />
-            ))}
+      {/* Footer: Vira + Mão + Histórico */}
+      <div className="mesa-footer">
+        <div className="secao-vira">
+          <div className="vira-item">
+          <span className="label-mini">Manilha</span>
+          {cartaManilhaVisual && (
+            <Carta
+              carta={cartaManilhaVisual}
+              forcedOpen={true}
+              size="small"
+            />
+          )}
+        </div>
+
+        </div>
+
+        <div className="area-jogador">
+          <div className={`moldura-mao ${turno === "jogador" ? "ativo" : ""}`}>
+            <span className="label-identificador">Sua Mão</span>
+            <div className="cartas-fileira">
+              {maoJogador.map((c, i) => (
+                <Carta
+                  key={c.uid}
+                  carta={c}
+                  verso={verso}
+                  delay={i * 100}
+                  onClick={() => jogarCartaJogador(c)}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className="mini-placar">
-          <div className="placar-header">
-            <span>Pri</span>
-            <span>Seg</span>
-            <span>Ter</span>
+        <div className="mini-placar-rodadas">
+          <div className="placar-header-mini">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
           </div>
-          <div className="placar-corpo">
+          <div className="placar-corpo-mini">
             {historico.map((h, i) => (
               <div key={i} className={`celula ${h || ""}`}>
-                {h ? (h === "voce" ? "Você" : h === "bot" ? "Bot" : "Tie") : ""}
+                {h === "voce" ? "✓" : h === "bot" ? "X" : ""}
               </div>
             ))}
           </div>
         </div>
       </div>
 
+      {/* Modal fim de jogo */}
       {resultadoFinal && (
         <div className={`modal-overlay ${resultadoFinal}`}>
           <div className="modal-content">

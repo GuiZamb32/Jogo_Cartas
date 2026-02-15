@@ -1,171 +1,353 @@
+/* ===== CONTAINER PRINCIPAL ===== */
 .mesa-container {
   width: 100vw;
   height: 100vh;
-  background: #063119; /* Verde escuro das fotos */
+  background: radial-gradient(circle, #0a4d26 0%, #063119 100%);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 10px;
+  padding: 15px;
   position: relative;
   overflow: hidden;
+  color: white;
+  box-sizing: border-box;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 .mesa-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 15px;
+  padding: 5px 10px;
+  z-index: 2;
 }
 
-.btn-voltar-red { background: #d00; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-.btn-embaralhar-blue { background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-.info-modo { color: white; font-weight: bold; }
+.info-modo {
+  font-weight: bold;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
 
-/* Molduras das Mãos */
-.moldura-mao {
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid #111;
+.btn-voltar-red {
+  background: #d00000;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-voltar-red:hover {
+  background: #ff1a1a;
+  transform: scale(1.05);
+}
+
+.btn-embaralhar-blue {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-embaralhar-blue:hover {
+  background: #4db3ff;
+  transform: scale(1.05);
+}
+
+/* ===== PLACAR SUPERIOR ===== */
+.placar-pontos {
+  position: absolute;
+  top: 70px;
+  right: 30px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 15px;
-  padding: 20px;
-  min-width: 300px;
-  min-height: 150px;
+  display: flex;
+  padding: 12px 18px;
+  gap: 25px;
+  backdrop-filter: blur(4px);
+}
+
+.placar-col {
+  text-align: center;
+  width: 70px;
+}
+
+.placar-label {
+  font-size: 16px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+
+.placar-valor {
+  font-size: 26px;
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+/* ===== ÁREA DO BOT ===== */
+.area-bot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* ===== MOLDURA DAS MÃOS ===== */
+.moldura-mao {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 30px 20px 15px 20px;
+  min-width: 340px;
+  min-height: 140px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.25s ease;
+  backdrop-filter: blur(3px);
 }
-
-.vira-container {
-  position: absolute;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  background: rgba(0,0,0,0.4);
-  padding: 10px 20px;
-  border-radius: 12px;
-  border: 1px solid #222;
-  color: white;
-  font-weight: bold;
-}
-
-.manilha-text {
-  color: #ffcc00;
-  font-size: 14px;
-}
-
 
 .moldura-mao.ativo {
-  border: 2px solid #ffcc0073;
-  box-shadow: 0 0 15px #ffcc0058;
+  border: 2px solid rgba(255, 204, 0, 0.6);
+  box-shadow: 0 0 20px rgba(255, 204, 0, 0.25);
+  transform: translateY(-2px);
 }
 
 .label-identificador {
   position: absolute;
-  top: 5px;
-  color: white;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
   font-weight: bold;
+  font-size: 14px;
+  opacity: 0.9;
 }
 
 .cartas-fileira {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
-/* Mesa Central Estilo Trapézio */
-.secao-central {
+/* ===== CENTRO DA MESA ===== */
+.area-central {
+  flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .tapete-mesa {
-  background: rgba(0, 0, 0, 0.3);
-  width: 60%;
-  height: 160px;
-  border-radius: 40px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border: 1px solid rgba(255,255,255,0.1);
-  gap: 20px;
-}
-
-.slot-mesa {
- display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-  min-width: 120px; /* Largura da carta */
-  min-height: 170px; /* Altura da carta */
-  justify-content: center;
-}
-
-.slot-resultado {
-  border-left: 1px solid #222;
-  border-right: 1px solid #222;
-  padding: 0 30px;
-  height: 100%;
+  width: 520px;
+  height: 240px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 70px;
+  border: 2px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  color: white;
-  text-align: center;
+  position: relative;
+  backdrop-filter: blur(2px);
 }
 
-/* Placar Mini */
-.mini-placar {
+.label-mesa {
   position: absolute;
-  bottom: 20px;
-  right: 50px;
-  background: rgba(0,0,0,0.5);
-  border-radius: 8px;
-  overflow: hidden;
-  width: 180px;
+  top: 12px;
+  left: 25px;
+  opacity: 0.6;
+  font-size: 14px;
+  font-weight: bold;
 }
 
-.placar-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+.cartas-jogadas {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+  justify-content: center;
+  min-height: 170px; /* evita corte das cartas */
+}
+
+/* ===== FOOTER (VIRA + MÃO + HISTÓRICO) ===== */
+.mesa-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 210px;
+  padding: 0 10px;
+}
+
+/* ===== VIRA E MANILHA ===== */
+.secao-vira {
+  display: flex;
+  gap: 18px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 18px 20px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.06);
+  backdrop-filter: blur(4px);
+}
+
+.vira-item {
   text-align: center;
-  color: #aaa;
-  font-size: 12px;
-  padding: 5px;
+  min-width: 90px;
 }
 
-.placar-corpo {
+.label-mini {
+  font-size: 11px;
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.8;
+  letter-spacing: 0.5px;
+}
+
+.card-placeholder-manilha {
+  width: 70px;
+  height: 95px;
+  border-radius: 10px;
+  background: rgba(255, 204, 0, 0.1);
+  border: 2px solid rgba(255, 204, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 20px;
+  color: #ffcc00;
+}
+
+/* ===== ÁREA DO JOGADOR ===== */
+.area-jogador {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+/* ===== MINI PLACAR DE RODADAS ===== */
+.mini-placar-rodadas {
+  width: 190px;
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.placar-header-mini {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  height: 40px;
-  border-top: 1px solid #333;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+  font-size: 12px;
+  padding: 6px;
+  border-bottom: 1px solid #333;
+  opacity: 0.8;
 }
 
-.celula { display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; }
-.celula.voce { background: #050; }
-.celula.bot { background: #522; }
+.placar-corpo-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  height: 55px;
+}
 
-/* Modal Vitoria/Derrota */
+.celula {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #333;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.celula:last-child {
+  border-right: none;
+}
+
+.celula.voce {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0,255,136,0.4);
+}
+
+.celula.bot {
+  color: #ff5555;
+  text-shadow: 0 0 8px rgba(255,85,85,0.4);
+}
+
+/* ===== MODAL FINAL ===== */
 .modal-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 100;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(6px);
 }
 
-.modal-overlay.vitoria { background: rgba(0, 50, 0, 0.7); }
-.modal-overlay.derrota { background: rgba(50, 0, 0, 0.7); }
+.modal-overlay.vitoria {
+  background: rgba(0, 60, 0, 0.7);
+}
+
+.modal-overlay.derrota {
+  background: rgba(60, 0, 0, 0.7);
+}
 
 .modal-content {
   background: linear-gradient(to bottom, #111, #000);
-  padding: 50px;
-  border-radius: 20px;
+  padding: 50px 60px;
+  border-radius: 25px;
   text-align: center;
   border: 2px solid #333;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
 }
 
-.modal-content h1 { font-size: 60px; color: white; margin-bottom: 30px; }
-.btn-jogar { background: #080; color: white; padding: 15px 30px; border-radius: 10px; margin-right: 10px; cursor: pointer; }
-.btn-sair { background: #800; color: white; padding: 15px 30px; border-radius: 10px; cursor: pointer; }
+.modal-content h1 {
+  font-size: 64px;
+  color: white;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+.btn-jogar {
+  background: #0a7a2f;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  margin-right: 15px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-jogar:hover {
+  transform: scale(1.08);
+  background: #0fbf4a;
+}
+
+.btn-sair {
+  background: #8b0000;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-sair:hover {
+  transform: scale(1.08);
+  background: #cc0000;
+}
